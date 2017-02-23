@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block sitebody %}
+<div class="container">
+<div class="page-header">
+    <div class="row">
+        <div class="col-md-2">
+            <a href="/f/" role="button" class="btn btn-default"><span class="glyphicon glyphicon-circle-arrow-left"></span> Back</a>
+        </div>
+        <div class="col-md-6">
+            <h2>
+                {{ object.label }}
+            </h2>
+        </div>
+        <div class="col-md-2 text-right">
+            <span>{{ object.amount }} {{ object.get_flow_type_display }}</span>
+            <span>{% if object.flowschedule %}Scheduled{% else %}No Schedule{% endif %}</span>
+        </div>
+        <div class="col-md-2 text-right">
+            <a href="{{ object.get_absolute_url }}edit/" role="button" class="btn btn-default"><span class="glyphicon glyphicon-edit"></span> Edit</a>
+        </div>
+    </div>
+</div>
+
+
+<div class="row">
+    <div class="col-md-7">
+        {% if object.flowschedule %}
+            Next: {{ object.flowschedule.get_next_date }}
+        {% endif %}
+    </div>
+    <div class="col-md-3 text-right">
+        {{ object.balance }}
+    </div>
+    <div class="col-md-2 text-right">
+        <a href="{{ object.get_absolute_url }}transaction/" role="button" class="btn btn-{% if object.flow_type == 10 %}success{% else %}danger{% endif %}">
+            <span class="glyphicon glyphicon-{% if object.flow_type == 10 %}plus{% else %}minus{% endif %}"></span>
+            {{ object.amount }}
+        </a>
+    </div>
+</div>
+
+{% for i in object.financial_transaction_set.all %}
+
+    <div class="row">
+        <div class="col-md-7">{{ i.created_at }}</div>
+        <div class="col-md-3 text-right">{{ i.amount }}</div>
+        <div class="col-md-2 text-right">
+            <a href="{{ i.get_absolute_url }}" role="button" class="btn btn-default"><span class="glyphicon glyphicon-edit"></span> Edit</a>
+        </div>
+    </div>
+{% endfor %}
+
+
+</div>
+{% endblock %}

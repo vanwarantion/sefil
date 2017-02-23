@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+
+{% block pageTitle %}
+<title>{{ page.title }} :: Kalmaz.com</title>
+{% endblock %}
+
+{% block sitebody %}
+    <div class="container">
+    <div class="page-header">
+        <h1>
+            <a href="/f/" role="button" class="btn btn-default"><span class="glyphicon glyphicon-circle-arrow-left"></span> Back</a>
+            {% if object %}
+            {{ object.label }}
+            {% else %}
+            {% trans "New Financial Flow" %}
+            {% endif %}
+        </h1>
+    </div>
+
+    <form id="father-form" method="POST" enctype="multipart/form-data" action=".">
+    {% csrf_token %}
+
+        {% if form %}
+            <div class="row">
+                {{ form.as_p }}
+            </div>
+        {% else %}
+            <p>Are you sure?</p>
+        {% endif %}
+
+        <hr />
+
+    {% if inlines %}
+        <div class="row">
+            <h2>Schedule:</h2>
+            {%  for f2 in inlines %}
+
+            {{ f2.as_p }}
+
+            {% endfor %}
+            {{ inlines.management_form }}
+        </div>
+    {% endif %}
+
+    <div class="text-right">
+        <input type="submit" class="btn btn-success" value="Go Go Gadget &rarr;">
+    </div>
+
+    </form>
+
+        <script type="text/javascript">
+            $(function() {
+                $('#father-form tr').formset({
+                    prefix: '{{ inlines.prefix }}'
+                });
+            })
+        </script>
+    </div>
+{% endblock %}

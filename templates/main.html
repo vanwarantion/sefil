@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block sitebody %}
+    <div class="container">
+    <div class="page-header">
+        <div class="row">
+            <div class="col-md-4"><h2>{% trans "Item" %}</h2></div>
+            <div class="col-md-4"><h2>{% trans "Amount" %}</h2></div>
+            <div class="col-md-4"><h2>{% trans "Balance" %}</h2></div>
+        </div>
+    </div>
+    {% for i in object_list %}
+        <div class="row">
+            <a href="{{ i.get_absolute_url }}"><div class="col-md-6"><h3>{{ i.label }}</h3></div></a>
+            <div class="col-md-3">
+                <h3 class="{% if i.flow_type == 10 %}text-success{% else %}text-danger{% endif %}">
+                    {{ i.amount }}
+                </h3>
+            </div>
+            <div class="col-md-2"><h3>{{ i.balance }}</h3></div>
+            <div class="col-md-1">
+                <a href="{{ i.get_absolute_url }}edit/" class="btn btn-default" role="button"><span class="glyphicon glyphicon-edit"></span> Edit</a>
+            </div>
+        </div>
+        <p>{{ i.text_description }}</p>
+    {% endfor %}
+    <div class="page-footer text-right">
+        <a href="/f/n/" role="button" class="btn btn-success"><span class="glyphicon glyphicon-plus"></span> {% trans "Add New" %}</a>
+    </div>
+    </div>
+{% endblock %}
